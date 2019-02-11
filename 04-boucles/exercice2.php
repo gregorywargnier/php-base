@@ -22,3 +22,8 @@ for($i = 0; $i < 11; $i++){
     echo '<span style="visibility: ' . $state. ' ">🔥</span>';
 }
 
+echo'--------------------------<br/>';
+
+
+
+
