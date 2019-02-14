@@ -31,6 +31,23 @@
      
     }
    
+
+    //j'ouvre le dossier upload
+    $folder = opendir('./upload');
+
+    //on regarde tous les fichiers dans le dossier
+    while( ($file = readdir($folder) ) !==false){
+
+        //on exclut les dossiers '.' et '..'
+      if($file !=='.' && $file !== '..'){
+        echo '<img width="150" src="upload/' .$file.'">';
+
+        
+        }    
+    }
+    
+
+    
     ?>
 
 </div>    
