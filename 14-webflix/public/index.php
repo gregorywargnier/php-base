@@ -58,25 +58,42 @@ include(__DIR__.'/../partials/header.php');
             <li data-target="#carouselExampleIndicators" data-slide-to="2"></li>
           </ol>
           <div class="carousel-inner" role="listbox">
-            <div class="carousel-item active">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="First slide">
+          <?php
+          /**
+           * On veut afficher 3 films aléatoires dans le caroussel
+           * Ces films devront être des films avec une jaquette.
+           * 
+           */
+          $query = $db->query('SELECT * FROM movie WHERE cover IS NOT NULL ORDER BY RAND() LIMIT 3');
+          $covers = $query->fetchAll();
+          //var_dump($cover);
+        
+          ?>
+          <?php
+            foreach($covers as $key => $cover){ ?>
+  
+                
+            <div class="carousel-item <?php if ( $key === 0) { echo 'active'; } ?>">
+              <img class="d-block img-fluid" src="/assets/img/ <?php echo $cover['cover'] ?>" alt="">
+              <div class="movie-cover" style="background-image:url(assets/img/<?php echo $cover['cover']; ?>)"></div>
             </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Second slide">
-            </div>
-            <div class="carousel-item">
-              <img class="d-block img-fluid" src="http://placehold.it/900x350" alt="Third slide">
-            </div>
+            <?php } ?>
           </div>
-          <a class="carousel-control-prev" href="#carouselExampleIndicators" role="button" data-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+          <a class="carousel-control-prev secondary link" href="#carouselExampleIndicators" role="button" data-slide="prev">
+          <div>
+          <span class="carousel-control-prev-icon  " aria-hidden="true"></span>
+            <span class="sr-only ">Previous</span>
           </a>
+          </div> 
           <a class="carousel-control-next" href="#carouselExampleIndicators" role="button" data-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+            <div>
+            <span class="carousel-control-next-icon " aria-hidden="true"></span>
+            </div>
             <span class="sr-only">Next</span>
           </a>
         </div>
+         
+
 
         <div class="row">
 
