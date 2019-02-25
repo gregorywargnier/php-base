@@ -45,6 +45,7 @@ include(__DIR__.'/../partials/header.php');
           <a href="#" class="list-group-item"> <?php echo $categories['name'];?></a>
        
       <?php } ?>
+      <a href="movie_add.php" class="btn btn-primary btn-block mt-4">Ajouter un film</a>
       </div>
       </div>
       <!-- /.col-lg-3 -->
@@ -111,12 +112,13 @@ foreach($movie as $movies){
       
           <div class="col-lg-4 col-md-6 mb-4">
             <div class="card h-100">
-              <a href="#"><img class="card-img-top" src="assets/img/<?php echo $movies['cover'];?>" alt="<?= $movies['name']; ?>">
+              <a href="movie_single.php?id=<?= $movies['id'];?>">
+              <img class="card-img-top" src="assets/img/<?php echo $movies['cover'];?>" alt="<?= $movies['name']; ?>">
               <div class="movie-cover" style="background-image:url(assets/img/<?php echo $movies['cover']; ?>)"></div>
               </a>
               <div class="card-body">
                 <h4 class="card-title">
-                  <a href="#"><?php echo $movies['name'];?></a>
+                  <a href="movie_single.php?id=<?= $movies['id'];?>"><?php echo $movies['name'];?></a>
                 </h4>
                 <h5><?php   
                 $date = new dateTime ($movies['date']);

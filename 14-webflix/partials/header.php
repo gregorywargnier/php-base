@@ -31,7 +31,7 @@ require_once __DIR__ . '/../config/database.php';
   <!-- Navigation -->
   <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-      <a class="navbar-brand" href="#"><?php  echo $siteName; ?> </a>
+      <a class="navbar-brand" href="index.php"><?php  echo $siteName; ?> </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarResponsive" aria-controls="navbarResponsive" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -39,8 +39,8 @@ require_once __DIR__ . '/../config/database.php';
         <?php
         //Gestion du menu dynamique
         $menuItems = [
-            ['label' => 'Accueil', 'href' => 'index.php'],
-            ['label' => 'Films', 'href' => 'movie_list.php']
+            ['label' => 'Films', 'link' => 'index.php'],
+            ['label' => 'catégories', 'link' => 'category_list.php']
         ];
 
                 ?>
@@ -49,7 +49,7 @@ require_once __DIR__ . '/../config/database.php';
         <?php
         foreach($menuItems as $item){ ?>
             <li class="nav-item">
-            <a class="nav-link" href="<?php echo $item['href'];?>">
+            <a class="nav-link" href="<?php echo $item['link'];?>">
             <?php echo $item['label'];?>
             </a>
             </li>
