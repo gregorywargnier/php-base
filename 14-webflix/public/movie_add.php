@@ -14,13 +14,37 @@
  */
 require_once __DIR__ . '/../partials/header.php'; ?>
 
+<?php 
+		// On déclare les variables pour éviter les erreurs
+		$name = null;
+        $description = null;
+        $category = null;
+        $date = null;
+        $cover = null;
+		if (!empty($_POST)) { // Récupére les informations saisies dans le formulaire
+		    $name = $_POST['name'];
+            $description = $_POST['description'];
+            $date = $_POST['date'];
+            $cover = $_FILES['cover'];
+           $category = $_POST['category_id'];
+
+//Un tableau avec les erreurs potentielles du formulaire
+           $errors = [];
+		}
+	?>
+
+
+
+
+
+
 <div class="container my-5">
     <div class="row">
         <div class="col-md-6 offset-3">
             <form action="" method="post" enctype="multipart/form-data">
                 <div class="form-group">
-                    <label for="name">Titre</label>
-                    <input type="text" name="name" id="name" class="form-control">
+                    <label for="nom">Titre</label>
+                    <input type="text" name="name" id="name" <?php echo $name; ?> class="form-control">
                 </div>
 
                 <div class="form-group">
@@ -30,7 +54,7 @@ require_once __DIR__ . '/../partials/header.php'; ?>
 
                 <div class="form-group">
                     <label for="description">Description</label>
-                    <textarea name="description" id="description" class="form-control"></textarea>
+                    <textarea name="description" id="description" class="form-control"><?php echo $description; ?></textarea>
                 </div>
 
                 <div class="form-group">
@@ -46,8 +70,10 @@ require_once __DIR__ . '/../partials/header.php'; ?>
                             $categories = $query->fetchAll();
                             foreach ($categories as $category) {
                                 echo '<option value="'.$category['id'].'">'.$category['name'].'</option>';
+                               
                             }
                         ?>
+                          <?php echo $category; ?>
                     </select>
                 </div>
 
@@ -56,5 +82,63 @@ require_once __DIR__ . '/../partials/header.php'; ?>
         </div>
     </div>
 </div>
+<?php
+        
+        
+        // Vérifier le name
+    if (empty($name)) {
+        $errors['name'] = 'Le nom du film n\'est pas valide';
+    }
+    // Vérifier la description
+    if (empty($description)) {
+        $errors['description'] = 'La description du film n\'est pas valide';
+    }
+ // Upload de la jaquette
+ if ($cover['error'] === 0) {
+    // On récupére le fichier temporaire
+    $tmpFile = $cover['tmp_name'];
+    // On récupére le nom du fichier
+    $fileName = $cover['name'];
+    // Générer un nom de fichier unique
+    $fileName = substr(md5(time()), 0, 8) . '_' . $fileName;
+    // On déplace le fichier à l'endroit désiré
+    move_uploaded_file($tmpFile, __DIR__.'./img/'.$fileName);
+    // On récupère le nom du fichier pour le mettre dans la bdd
+    $cover = $fileName;
+} else { // S'il n'y a pas d'upload
+    $cover = null;
+}
+
+
+
+    // Si le formulaire est valide
+    if (empty($errors)) {
+        $query = $db->prepare('INSERT INTO movie (name, date, description, cover, category_id) VALUES (:name, :date, :description, :cover, :category_id)');
+        $query->bindValue(':name', $name);
+        $query->bindValue(':date', $date);
+        $query->bindValue(':description', $description);
+        $query->bindValue(':cover', $cover);
+        $query->bindValue(':category_id', $category_id);
+        if ($query->execute()) {
+            echo '<div class="alert alert-success">Le film a bien été ajouté.</div>';
+        }
+    }
+
+?>
+
+<?php
+    // S'il y a des erreurs
+    if (!empty($errors)) {
+        echo '<div class="alert alert-danger">';
+        echo '<p>Le formulaire contient des erreurs</p>';
+        echo '<ul>';
+        foreach ($errors as $field => $error) {
+            echo '<li>'.$field.' : '.$error.'</li>';
+        }
+        echo '</ul>';
+        echo '</div>';
+    }
+?>
+
 
 <?php require_once __DIR__ . '/../partials/footer.php';
